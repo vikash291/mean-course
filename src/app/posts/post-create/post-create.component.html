@@ -1,10 +1,30 @@
 <mat-card>
-  <mat-form-field>
-    <input matInput type="text" [(ngModel)]="enteredTitle">
-  </mat-form-field>
+  <form (submit)="onAddPost(postForm)" #postForm="ngForm">
     <mat-form-field>
-      <textarea matInput rows="6" [(ngModel)]="enteredContent"></textarea>
+      <input
+       matInput
+       type="text"
+       name="title"
+       placeholder="Post Title"
+       ngModel
+       required
+       #title="ngModel">
+       <mat-error *ngIf="title.invalid">Please Enter the title for the Post</mat-error>
     </mat-form-field>
-  <button mat-raised-button color='primary' (click)='onAddPost()' >Save Button</button>
+    <mat-form-field>
+      <textarea
+       matInput
+       rows="6"
+       ngModel
+       name="content"
+       placeholder="Post Content"
+       required
+       #content="ngModel"></textarea>
+       <mat-error *ngIf="content.invalid">Please Enter the title for the Post</mat-error>
+    </mat-form-field>
+    <button mat-raised-button
+     color='primary'
+     type="submit">Save Button</button>
+  </form>
 </mat-card>
-<!-- <p>{{ newpost }}</p> -->
+
