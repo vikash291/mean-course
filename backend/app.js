@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const Post = require('./models/post');
+const postRouter = require('./routes/posts');
 
 const app = express();
 
@@ -32,54 +32,7 @@ app.use((req, res, next)=> {
   next();
 });
 
-// to post the data into database.
-app.post("/api/posts",(req, res, next) => {
-  // const post = req.body;
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content
-  });
-  // console.log(post);
-  post.save().then(createdPost => {
-    res.status(201).json({
-      message: 'post added successfully',
-      postId : createdPost._id
-    });
-  });
-});
-
-// route to fetch data
-app.get('/api/posts',(req,res,next)=>{
-  // const posts=[
-  //   {
-  //     id: "asdf2134",
-  //     title: "First server side post",
-  //     content: "First server side Content"
-  //   },
-  //   {
-  //     id: "wqerq123",
-  //     title: "Second server side post",
-  //     content: "Second server side content!"
-  //   }
-  // ]
-
-  // find() is an asynchronus method so we need put response inside the find method
-  Post.find().then(document => {
-    res.status(200).json({
-      message: "Data fetched Successfully",
-      posts: document
-    });
-  });
-
-});
-
-app.delete("/api/posts/:id",(req,res,next)=>{
-  Post.deleteOne({ _id: req.params.id }).then(result => {
-    console.log(result);
-    res.status(200).json({message: 'Post Deleted!'});
-  });
-
-});
+app.use("/api/posts",postRouter);
 
 // adding add to module
 module.exports = app;

@@ -9,7 +9,8 @@ import { MatCardModule ,
          MatToolbarModule,
          MatExpansionModule,
          MatInputModule,
-         MatFormFieldModule
+         MatFormFieldModule,
+         MatProgressSpinnerModule
     } from '@angular/material';
 
 import { PostCreateComponent } from './posts/post-create/post-create.component';
@@ -36,7 +37,8 @@ import { PostListComponent } from './posts/post-list/post-list.component';
     MatToolbarModule,
     MatExpansionModule,
     MatFormFieldModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
