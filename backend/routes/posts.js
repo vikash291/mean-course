@@ -1,12 +1,47 @@
 const express = require('express');
 
+// Its is package which allow us to extract the file data from the url
+const multer = require('multer');
+
+//include post data model
 const Post = require('../models/post');
 
 const router = express.Router();
 
+const MIME_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image.jpg': 'jpg'
+};
+
+//configuration for multer
+const storage = multer.diskStorage({
+  // 'destination' key defines where we want to store the file.
+  destination: (req, file ,cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mine type");
+    if(isValid){
+      error = null
+    }
+    // cb=> callback function  | callback(ERROR, 'path_name_to_store_file')
+    cb(error, "backend/images",);
+  },
+  //'filename' key helps to change the stored file name
+  filename:(req, file, cb) => {
+
+    // 'originalname','minetype' if predefined file property
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    const ext = MIME_TYPE_MAP[file.mimetype];
+
+    //callback(ERROR, updatedfilename)
+    cb(null, name+'-'+Date.now()+'.'+ext);
+
+
+  }
+});
 
 // to post the data into database.
-router.post("",(req, res, next) => {
+router.post("", multer({storage}).single('image'), (req, res, next) => {
   // const post = req.body;
   const post = new Post({
     title: req.body.title,

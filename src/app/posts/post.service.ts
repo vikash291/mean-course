@@ -42,17 +42,30 @@ export class PostService {
     return this.postUpdated.asObservable();
   }
 
-  addPost(title: string, content: string) {
-    const post: Post = {id: null, title: title , content: content};
-    this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', post)
-    .subscribe((responseData) => {
-      const id = responseData.postId;
-      // console.log(responseData.message);
-      post.id = id;
-      this.posts.push(post);
-      this.postUpdated.next([...this.posts]);
-      this.router.navigate(['/']);
-    });
+  addPost(title: string, content: string, image: string) {
+    // FormData helps to combine text and blob data
+    const postData = new FormData();
+    postData.append('title', title);
+    postData.append('content', content);
+    postData.append('image', image, title);
+    this.http
+      .post<{message: string, postId: string}>(
+        'http://localhost:3000/api/posts',
+        postData
+      )
+      .subscribe((responseData) => {
+        const post: Post = {
+          id: responseData.postId,
+          title: title,
+          content: content
+        };
+        // const id = responseData.postId;
+        // // console.log(responseData.message);
+        // post.id = id;
+        this.posts.push(post);
+        this.postUpdated.next([...this.posts]);
+        this.router.navigate(['/']);
+      });
   }
 
   updatePost(id: string, title: string, content: string) {
