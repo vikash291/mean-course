@@ -5,3 +5,10 @@
 .info-text{
   text-align: center;
 }
+.post-image{
+  width: 100px;
+  height: 120px;
+}
+.post-image img{
+  width:100%;
+}

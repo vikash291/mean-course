@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 // here we have defined the schema of the post model
 const postSchema = mongoose.Schema({
   title: {type:String, require: true},
-  content: {type: String, require: true}
+  content: {type: String, require: true},
+  imagePath: {type: String, require: true}
 });
 
 // here we are declaring the model.

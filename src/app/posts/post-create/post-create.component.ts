@@ -40,10 +40,16 @@ export class PostCreateComponent implements OnInit {
         // this.singlePost = this.postService.getPost(this.postId);
         this.postService.getPost(this.postId).subscribe(postData => {
           this.isLoading = false;
-          this.singlePost = {id: postData._id, title: postData.title, content: postData.content};
+          this.singlePost = {
+            id: postData._id,
+            title: postData.title,
+            content: postData.content,
+            imagePath: postData.imagePath
+          };
           this.form.setValue({
             'title': this.singlePost.title,
-            'content': this.singlePost.content
+            'content': this.singlePost.content,
+            'image': this.singlePost.imagePath
           });
         });
 
@@ -70,7 +76,12 @@ export class PostCreateComponent implements OnInit {
         this.form.value.image
         );
     } else {
-      this.postService.updatePost(this.postId, this.form.value.title , this.form.value.content);
+      this.postService.updatePost(
+        this.postId,
+        this.form.value.title,
+        this.form.value.content,
+        this.form.value.image
+      );
     }
     // form.resetForm(); // angular resetForm
     this.form.reset(); // reset form for reactive form.
