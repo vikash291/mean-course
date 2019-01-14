@@ -76,11 +76,24 @@ router.get('',(req,res,next)=>{
   //   }
   // ]
 
+  //req.query use to fetch query string data form the url and it retruns the string data
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const postQuery = Post.find();
+  let postDocument;
+  if(pageSize && currentPage){
+    postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+  }
   // find() is an asynchronus method so we need put response inside the find method
-  Post.find().then(document => {
+  postQuery.then(document => {
+    postDocument = document;
+    return Post.count();
+  })
+  .then(count =>{
     res.status(200).json({
       message: "Data fetched Successfully",
-      posts: document
+      posts: postDocument,
+      totalPosts: count
     });
   });
 
@@ -88,6 +101,7 @@ router.get('',(req,res,next)=>{
 
 // delete the Post by id
 router.delete("/:id",(req,res,next)=>{
+  console.log(req.params.id);
   Post.deleteOne({ _id: req.params.id }).then(result => {
     console.log(result);
     res.status(200).json({message: 'Post Deleted!'});
